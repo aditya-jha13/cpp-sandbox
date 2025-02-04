@@ -1,0 +1,41 @@
+Pointers in C/C++:
+	variables that store the address of other variables.
+	
+	derefrencing - changing the value of a variable by using the pointer. (*p = new value)
+	
+	& - gives the address of the variable.
+	
+	pointer variables need to be initialised before printing it. No dummy value is stored in pointer variables upon init.
+	
+	Pointer arithmetic: Let's say we have an integer pointer then p+1 will point to 4 bytes ahead. [C++ sees char *p as strings and not pointers so we need to cast it as a void pointer and so it prints out the memory address of the variable.]	
+	
+	Type casting of pointers to different data types is possible. Void pointers are possible too but pointer arithmetic is not possible with them.
+	
+	Call by reference - passing the address of the variable as a parameter to a function, so by dereferencing the address we can change the value of the actual variable in main function. Call by value happens when we simply pass a variable as a parameter and the value gets copied.
+		- RAM allots some memory for the code, static/global variables, stack and heap. The first three memory allocation are fixed at the start of the execution of code and heap gets alloted dynamically. So in CALL STACK, when we call by reference - it WORKS!
+	
+	Pointers and Arrays - int A[] of size n is same as *A (derefrencing) and using pointer arithmetic to get other values as well. But something like A++ is not possible. We can use a pointer to store the starting address and then use increment operator on them to get other values.
+	
+	Characters arrays and pointers - to store a string, we need a null character at the end of the string to allow the system to understand when to stop. Because here, unlike arrays we dont pass the length of the string explicitly. While calculating the size of the string we also add an additional byte of the null character but strlen() doesnt include the null character.
+	 - Just like an array, we cannot do S+i where S is char S[n]
+	 - Arrays are passed as reference and not the whole array is passed as argument.  
+	
+	 STACK IS A CONTIGUOUS BATCH OF MEMORY. Let's say I define a character array (memory gets allocated for it in the stack), the main function has some memory allocated for it. All the other functions called within the main functions get memory allocated and after the function returns some value, the memory gets deallocated again. 
+	 - if we define a variable, char *c = "hello" - now we cannot update the characters (in the main function) of the string because it is not stored in the stack memory. But if we pass the same variable as an argument to some function then we can change the characters of the string unless it is passed as a pointer to a constant character array. char* c and const char* c - stored as read only memory, char c[] - stored in stack.
+	
+	Pointers and multi-dimensional arrays - For 2D arrays, a[0] returns the address to the 0th element of the 1st row. 
+	 - a = a[0] = &a[0][0]
+	 - [1] int (*p)[3] = a - here, p is the pointer to a 1D array of size 3.
+	 - For derefrencing, lets say we have an n dim array. So if we are using n * to dereference it will return the value at that index. (n-1) *s will return the pointer to that index and so on.
+	 - Passing pointers as function argument - we need to pass pointers in that case as shown in [1]. If we need to pass 3D array of integers, lets say - C[3][2][2], now we need to pass int (*A)[2][2]) same works for other dimensions array.
+	 
+
+How is memory used while running a program?
+It follows a stack data structure where first the text part of the code is stored. Then all the functions are stored on top of stack through which the control passes and as soon as the scope of the function is over the memory is cleared. Similarly, when the main function ends - the memory allocated to main is clear. After that the memory alloted to any global variables is cleared.
+Heap is a part of memory which is free and we can use the memory to store variables which might change dynamically, after the use of the variable it is our duty to deallocate the memory. 
+
+To allocate memory is heap:
+	- malloc returns a void pointer to the starting address of the memory it allots. The size of memory can be passed as an argument. void* ptr(n*sizeof(int))
+	- calloc is similar to malloc. It initialises the memory with 0 rather than a garbage value - void* ptr(n,sizeof(int))
+	- realloc which also takes two arguments. The first is the address to any contiguous memory block already present and next argument is the size to which it needs to be extended - void* ptr(A,2n*sizeof(int)). It allocated extra memory contigous to the first block if memory is present otherwise it deallocates the memory in the previous block and allocates fresh memory for everything. realloc can also work as malloc if the first argument is passed as NULL.
+

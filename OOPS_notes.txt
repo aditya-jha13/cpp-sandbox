@@ -1,0 +1,144 @@
+Functions in C++:
+When a function is called, a new stack memory is allocated - the function parameters, local variables and the return address are stored to the stack frame.
+The code instructions are stored in the text segment.
+Once the function completes - the final return value is sent to the return address and the stack memory is destroyed.
+We can call parameters by reference or by value. If we call by value, a new instance of variable is created which results in more memory and not dynamic updates but if we call by reference - the variable gets dynamically updated because now the function's stack memory has the address of the variable and all the updates are happening to the actual variable and also less memory.
+
+Headers in C++:
+Defining one function multiple times throws an error and use "#pragma once" to tackle it. So, if there are multiple places where a function is defined - then pragma makes sure its only defined once.
+<> are used to search for files in the include directory where "" are used to find files which are relative to my file.
+
+Pointers in C++:
+All the pointer variables are addresses so they are of type int and it doesnt matter what they hold.
+Look into memset(pointer to the start, initialising_value, how_many_bytes)
+memset is used to fill a block of memory with a specific value. It can do so in stack and heap. Its diff from calloc, malloc etc.
+eg: char str[20];
+    memset(str, 'A', sizeof(str) - 1);  // Fill with 'A'
+
+References in C++:
+int a = 5;
+int& x = a; // Here & is part of the type of variable, we are not dereferencing a variable.
+Ref variable is an alias. In memory, there is only variable 'a' and no reference variable. 
+Passing by value in a function:
+void Increment(int value)
+{
+	int value = value;
+}
+
+Passing by reference: (BY POINTERS)
+void Increment(int* value) // in main pass the &a(value address of the value, by dereferening)
+{
+	(*value)++;
+}
+Passing by reference: (BY REFERENCES)
+void Increment(int& value) // in main pass the a(PASSING THE VARIABLES WORK)
+{
+	(value)++;
+}
+
+References once set we cant unset it.
+While declaring reference, it is needed to be initialised.
+
+Classes in C++:
+User defined data structure can be created using classes.
+All the class attributes, if not explicitly specified is private so we cannot access it in the main function unlike Python. We need to use the 'public' keyword to access and change the values of the variables.
+
+Class is a private modifier and struct is PUBLIC.
+
+STATIC in C++:
+So static keyword, outside the class/struct scope is simply that lets say I have a file1.cpp and I have a static variable or function in that file, i can use them only in that file and not in any other file even if we import it. So if i use the same variable in some other file it throws an error. Whereas if the variable is not static then we can use the 'extern' keyword to access the variable in a different file.
+
+Static can be used for private, file-local symbols whereas extern can be used to access global variables which are defined in some other file.
+
+Static in Classes and Structs:
+
+So if i have many objects of a class made, then the static variable or function only has one instance created, i.e, this instance is shared by all the objects and the latest changes in these instances made by any object reflects in all objects.
+Any non static variable cannot be accessed by the static function within a class because a blueprint of the class object is not passed to the static function as comp. to the non static functions. We have to give it reference to which instance's variables needs to be passed to the static fn.
+Any static variable needs to be defined first before accessing or changing its content in the main function. Define it through the namespace of the class. DO THIS AND THEN IT ALL MAKES SENSE!
+
+Imagine static variables and functions to be a part of class namespace which is common across all the instances.
+
+Constructors in C++:
+While init any object of a class, a construcutor method automatically runs and inits the member variables - if requires.
+Destructors in C++:
+A special function which gets called when the object gets removed from the call stack memory. Used while doing heap allocation. To free the memory after use, as heap memory doesnt get destroyed automatically.
+
+Inheritance in C++:
+Base Class - has all the information which can be inherited by other classes.
+Super Class - inherits the base class attributes.(super class doesnt inherit private members of the base class) - if private, the base class attributes cannot be accessed in main by derived class objects.
+The constructor for super class can be done using Initialiser List - which does faster initialisation rather than the traditional way of copying things from one variable to another.
+while init. super class object, the base class object gets init. first because of the initialisation list.
+It is mandatory for - const members, references and base class init.
+
+
+Stack vs Heap Memory in C++:
+Stack memory is a contigous block of memory hence the fast processing whereas for heap allocation there is a significant time overhead because it is a more involved process - 'new' keyword calls the malloc() function which searches for the block of memory required in the memory registry and then shares the pointer to the address and updates the status of the memory - that now, its being used. Whereas for stack its simply a update in the pointer after allocation of memory for a variable.
+The objects and functions defined in stack have a lifetime - end of {} is when the stack memory allocated for the namespace gets deleted.
+
+Virtual Functions in C++:
+Polymorphism is the ability of an object to make multiple forms. It allows the same underlying methods implemented by various classes to be used for different data types. It comes in two types:
+
+Compile-Time Polymorphism(Static):
+Function or Constructor overloading, decision of calling a specific fn is made at compile time.
+
+Runtime polymorphism (Dynamic):
+Achieved through inheritance and **virtual functions** - the decision for calling the function is made at runtime based on the actual type of the object rather than the static reference type.
+
+To understand this SHIT, refer to virtualfn_ch.cpp and then the below explaination:
+
+Virtual Tables - for polymorphism in runtime. It is a table of function pointers that allows correct function to be called for a polymorphic object, even when its called through a base class ref.
+Every object of a class with a virtual function gets a vptr which points to vtable of the class.
+
+So the Entity class has a virtual function and Player is a Derived Class - so both these classes has their separate vtable - virtual table which points to the function which is virtual in both these classes. Now the derived class also has an additional function with same name which overrides the function. 
+Now overriding means that the vtable pointer in the Derived Class vtable gets updated to the function address of this new function. 
+
+Now during the runtime, it depends on the object type which function get triggered based on if the object is of Player type or Entity type and doesnot depend on the type of the static reference type. This makes it Runtime Polymorphism. If we pass a Player object - the vtable for the Player searches for the function which needs to be implemented, now because we have overriden the base class function, it calls the Derived class function.
+
+Interface in C++: EMPTY CLASSES FULL of PURE VIRTUAL FUNCTION.
+Interface is a class which simply has an empty virtual function declarations and the classes which inherit this class overide the function according to the functionality. And by using the Reference to this base class we call objects of derived classes and the vtable of these derived classes which are ovverriden by functions are called. For the derived class to be valid, the class should have all the virtual functions which are initi. in the base class implemented otherwise it will throw an error.
+
+Visibility in C++:
+PUBLIC: access everywhere
+PROTECTED: access within the class and all the children classes
+PRIVATE: access only within the class
+
+Strings in C++:
+No way to find the size of the string if its allocated dynamically. Also the string should end with a null entry for the pointer to know when to exit. The null string is '\0'.
+
+CONST in C++:
+const String& getName() const {return m_Name;}
+a function definition like this is important in a class because if there is any external function which want to access this function of the class through a const reference of the class object - it doesnt want you to update the contents of the object hence the above def is imp.
+
+Smart Pointers in C++:
+new allocates memory in heap and delete deletes the memory. Smart Pointers does the 'new' and 'delete' functionality. It is a wrapper around normal pointers. 
+There are three different smart pointers:
+std::unique_ptr<OBJECT NAME> obj = std::make_unique<OBJECT NAME>()
+Unique pointers stores the memory address and its like a stack allocated object and calls the delete on the pointer as soon as the scope ends. It has a very low overhead, but we cannot share the memory it stores (THATS WHY UNIQUE!) - for eg passing it as a reference some other function or class because as soon as the scope ends, the memory is freed and now the reference to the pointer points to a free memory.
+std::shared_ptr<OBJECT NAME> obj = std::make_shared<OBJECT NAME>()
+Shared pointers allow multiple pointer to store the memory address of a variable or sth. It does by maintaining a reference count, till the ref count > 0 - the memory is not freed. 
+Also, creating a shared pointer through this - std::shared_ptr<OBJECT NAME> obj(new Entity()) makes the ref count 2 but it should have been 1, because of new keyword and the shared_ptr definition.
+
+std::weak_ptr<OBJECT NAME> obj = std::make_weak<OBJECT NAME>() 
+We can copy the shared_ptr to weak pointers and it doesnt increase the ref count of the shared pointer address, so its best when we dont want to take ownership and still do some work using the memory stored in that address. So basically the clearing of memory doesnt depend on the end scope of weak pointers, as soon as the ref count is 0, the memory at the address gets freed and WE DONT CARE ABOUT WEAK POINTERS.
+
+In order to pass a smart pointer as a reference we can first dereference the smart pointer or use the .get() to send the raw pointer. The raw pointer should not delete and free the memory, it should let the parent smart pointer handle the accessibility. Now, if we send a smart pointer as a return object from a function it should always be a unique_ptr and the caller should decide what does he want to do with the memory address - make it shared_ptr, just use it as a raw pointer or use it as a unique_ptr.
+
+Copy and Copy Constructor in C++:
+String a = "Hello";
+String b = a;
+Lets say that String is a user-defined struct which doesnt has any copy constructor - it has a constructor and a destructor which frees the memory. Now, in this case - b is a String which points to the same memory address as A does because we have copied all the member variables from A to B. But the destructor is called twice - and so it throws an error because we are trying to free a memory by destroying B object when that buffer has already been cleaned when A object got destroyed. UNIQUE POINTERS HAD THIS FEATURE WHERE COPYING WAS NOT ALLOWED.
+Copy Constructor(str& other) = delete;
+
+Arrow Operator in C++:
+If we want to access any member function or variable through the class' pointer we can use the arrow operator to do so.
+
+Function Pointers in C++:
+Just a pointer to a function where we set a pointer variable to the memory address of a function which is basically a set of steps in the Text part of Stack. Now wherever we use function pointers, we can use the lambdas instead of it. Inplace functions are lambdas.
+[capture_clause](parameters){//function body}
+capture clause determines how variable from the surrounding scope are accessed via lambda.
+[x] - by value
+[&x] - by reference
+[=] - all variables are passed by value
+[&] - all variables are passed by reference.
+
+this is a pointer to the current object. Its a pointer which can not be reassigned to other addresses which means - Entity& const *this; we can reassign values which it stores but cannot change the address it points to. this pointer is not present for static functions.
